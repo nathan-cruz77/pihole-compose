@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    domainname: docker
+    hostname: pihole
+    image: pihole/pihole:latest
+    env_file: .env
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+      - "80:80/udp"
+      - "443:443/tcp"
+      - "443:43/udp"
+    restart: unless-stopped
+    volumes:
+      - ./docker/pihole/pihole:/etc/pihole
+      - ./docker/pihole/dnsmasq.d:/etc/dnsmasq.d
+      - ./docker/pihole/resolv.conf:/etc/resolv.conf
+    environment:
+      - DNS1=127.0.0.1
+      - DNS2=1.1.1.1
+      - DNS3=1.0.0.1
